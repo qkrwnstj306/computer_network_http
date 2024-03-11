@@ -10,7 +10,7 @@ HTTP Protocol
 1. User 가 login_url 에 로그인
 2. 로그인에는 user name 과 password 가 필요
 3. HTTP protocol 의 basic authentication (base 64 encoding)
-    3-1. 이때, 교재의 authentication 과는 다르게 user name 도 encoding 된다 
+    3-1. 이때, 교재의 authentication 과는 다르게 user name 도 encoding 된다. 즉, attacker 가 로그인을 할 때에는 username:password > encoding 되어 있는 형태로 보내야한다.
 4. Attacker 는 user 가 로그인을 시도할 때, sniffing 을 통해 정보 가져오기
 5. Packet 에 담겨져 있는 user name 과 password 를 이용해 login_url 에 로그인 
 
@@ -19,6 +19,14 @@ HTTP Protocol
 1. decoding 된 user name 과 password
 2. HTTP protocol version
 3. Host name 
+=============================
+최종적으로 필요한 것들, (code + image)
+
+1. decoded user info
+2. HTTP protocol version
+3. Host name
+4. response.status_code == 200 by attacker
+
 """
 
 
@@ -27,7 +35,6 @@ from login import login_url
 import base64
 import requests
 from scapy.all import*
-
 
 class User():
   
@@ -40,6 +47,10 @@ class Attacker():
         
         self.encoded_info = None
         self.decoded_info = None
+        
+        self.http_version = None
+        self.host_name = None
+        
         self.packet_captured = False
     
     def sniff_http_traffic(self):
@@ -90,11 +101,12 @@ if __name__ == '__main__':
     # User info 를 토대로, login
     attacker.attack()
     
-    
-    
-    
+    print("username:password: ",attacker.decoded_info)
+    print("HTTP protocol version: ",attacker.http_version)
+    print("Host name: ",attacker.host_name)
     
 """
+print(load):
 
 GET /wireshark-labs/protected_pages/HTTP-wireshark-file5.html HTTP/1.1
 Host: gaia.cs.umass.edu
