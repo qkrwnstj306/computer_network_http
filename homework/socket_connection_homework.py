@@ -1,4 +1,4 @@
-import socket 
+from socket import *
 
 def socket_connect():
     HOST = ""
@@ -6,28 +6,17 @@ def socket_connect():
     
     encoded_credentials = ""
     
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((HOST,PORT))
-        
-        request_message = f"GET ...\r\n" + \
-                      f"Host: ...\r\n" + \
-                      f"Authorization: ...\r\n" + \
-                      "\r\n"
-        
-        s.sendall(request_message.encode())
-        
-        response = b'' # don't change
-        
-        while True:
-            data = s.recv(1024)
-            if not data:
-                break
-            response += data
     
-    print("RESPONSE:\n") 
-    print(response.decode())
     
-    if b"200 OK" in response:
+    clientSocket = ""
+    
+    
+    
+    modifiedSentence = clientSocket.recv(1024)
+    print("RESPONSE:\n\n", modifiedSentence.decode())
+    clientSocket.close()
+    
+    if "200 OK" in modifiedSentence.decode():
         print("Attacker 로그인 성공!")
     else:
         print("Attacker 로그인 실패...")

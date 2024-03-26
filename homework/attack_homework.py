@@ -47,11 +47,13 @@ class Attacker():
         
         self.protocol = 'http'
     
+    """ Packet sniffing """
     def setting(self):
         self.http_packet_count = 0 
         self.capture = pyshark.LiveCapture(interface='eno1', bpf_filter='tcp port 80 or tcp port 443')
         self.capture.apply_on_packets(self.packet_handler)
     
+    """ HTTP packet 2 개만 출력 """
     def packet_handler(self, pkt):
         if self.protocol in pkt:
 
@@ -62,7 +64,8 @@ class Attacker():
                 self.print_user_info()
                 self.attack()
                 self.protocol = 'exit'
-
+    
+    """ login_url 로 attacker 가 로그인 시도 """
     def attack(self):
         socket_connect()
             
